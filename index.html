@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2026! 🎆</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="fireworks"></canvas>
+
+    <div class="content">
+        <div class="year-display">
+            <span class="digit" data-digit="2">2</span>
+            <span class="digit" data-digit="0">0</span>
+            <span class="digit" data-digit="2">2</span>
+            <span class="digit" data-digit="6">6</span>
+        </div>
+
+        <h1 class="title">Happy New Year!</h1>
+        <p class="subtitle">Wishing you joy, success, and endless possibilities</p>
+
+        <div class="controls">
+            <button id="fireworkBtn" class="btn btn-primary">
+                <span class="btn-icon">🎆</span>
+                Launch Fireworks!
+            </button>
+
+            <button id="soundToggle" class="btn btn-secondary">
+                <span class="btn-icon" id="soundIcon">🔊</span>
+                Sound On
+            </button>
+        </div>
+
+        <div class="surprise-container">
+            <button id="surpriseBtn" class="btn btn-surprise">
+                <span class="btn-icon">🎁</span>
+                Open Your Surprise!
+            </button>
+
+            <div id="fortuneCard" class="fortune-card hidden">
+                <div class="fortune-inner">
+                    <div class="fortune-header">✨ Your 2026 Fortune ✨</div>
+                    <p id="fortuneText" class="fortune-text"></p>
+                    <button id="newFortune" class="btn btn-small">Get Another Fortune</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="confetti-burst" id="confettiBurst"></div>
+    </div>
+
+    <div class="floating-emojis" id="floatingEmojis"></div>
+
+    <footer class="footer">
+        <p>Made with ❤️ for an amazing 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
