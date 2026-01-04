@@ -9,70 +9,33 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-// Audio Context for Sound
-let audioCtx = null;
+// Audio Setup
 let soundEnabled = true;
+let fireworkSound = null;
 
+// Preload the firework explosion sound
 function initAudio() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (!fireworkSound) {
+        fireworkSound = new Audio('assets/fireworkblast-106275.mp3');
+        fireworkSound.volume = 0.5;
     }
 }
 
 function playFireworkSound() {
-    if (!soundEnabled || !audioCtx) return;
+    if (!soundEnabled || !fireworkSound) return;
 
-    // Launch sound
-    const osc1 = audioCtx.createOscillator();
-    const gain1 = audioCtx.createGain();
-    osc1.connect(gain1);
-    gain1.connect(audioCtx.destination);
-    osc1.frequency.setValueAtTime(150, audioCtx.currentTime);
-    osc1.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.5);
-    gain1.gain.setValueAtTime(0.3, audioCtx.currentTime);
-    gain1.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-    osc1.start(audioCtx.currentTime);
-    osc1.stop(audioCtx.currentTime + 0.5);
-
-    // Explosion sound
-    setTimeout(() => {
-        if (!soundEnabled) return;
-        const bufferSize = audioCtx.sampleRate * 0.3;
-        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
-        }
-        const noise = audioCtx.createBufferSource();
-        noise.buffer = buffer;
-        const noiseGain = audioCtx.createGain();
-        noise.connect(noiseGain);
-        noiseGain.connect(audioCtx.destination);
-        noiseGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-        noiseGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-        noise.start();
-    }, 400);
+    // Clone the audio to allow overlapping sounds
+    const soundClone = fireworkSound.cloneNode();
+    soundClone.volume = 0.3 + Math.random() * 0.3; // Vary volume slightly
+    soundClone.playbackRate = 0.9 + Math.random() * 0.2; // Vary pitch slightly
+    soundClone.play().catch(() => {}); // Ignore errors if user hasn't interacted yet
 }
 
 function playCelebrationSound() {
-    if (!soundEnabled || !audioCtx) return;
+    if (!soundEnabled) return;
 
-    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-    notes.forEach((freq, i) => {
-        setTimeout(() => {
-            if (!soundEnabled) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.frequency.value = freq;
-            osc.type = 'sine';
-            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.3);
-        }, i * 100);
-    });
+    // Play firework sound for celebration too
+    playFireworkSound();
 }
 
 // Firework Classes
